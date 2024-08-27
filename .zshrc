@@ -21,6 +21,15 @@ fi
 autoload -U compinit
 compinit
 
+# key bindings
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+
+autoload -U edit-command-line
+zle -N edit-command-line
+
+bindkey "^x" edit-command-line
+
 # auto suggestions
 if [[ -z "$HOMBREW_PREFIX" ]]; then
 	_suggestions_path="$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
@@ -28,6 +37,15 @@ if [[ -z "$HOMBREW_PREFIX" ]]; then
 	if [[ -e "$_suggestions_path" ]]; then
 		export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
+		source "$_suggestions_path"
+	fi
+fi
+
+# syntax highlighting
+if [[ -z "$HOMBREW_PREFIX" ]]; then
+	_suggestions_path="$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+	if [[ -e "$_suggestions_path" ]]; then
 		source "$_suggestions_path"
 	fi
 fi
