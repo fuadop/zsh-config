@@ -1,6 +1,8 @@
 alias vi="nvim"
 alias vim="nvim"
 
+alias ls="ls --color=tty"
+
 eval "$(zoxide init zsh)"
 
 function git_branch_name {
