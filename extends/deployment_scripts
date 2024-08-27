@@ -1,0 +1,86 @@
+function get_script_path {
+	_script=$1
+	_working_dir=$(pwd)
+	_max_parent_dir="$HOME/Documents"
+
+	echo "" 1>&2
+	echo "Working Directory: $_working_dir" 1>&2
+	echo "" 1>&2
+
+	if [[ $_working_dir != "$_max_parent_dir"* ]]; then
+		echo "Working directory not in $HOME/Documents folder" 1>&2
+		echo "Exiting..." 1>&2
+
+		return 1
+	fi
+
+	echo "Searching for $1..." 1>&2
+
+	_search_paths=$(echo $_working_dir |
+		awk '
+			BEGIN { FS="/" }
+			{
+				for (i=4; i<=NF; i++) {
+					for (j=2; j<=i; j++) {
+						printf "/%s", $j
+					}
+
+					printf " " 
+				}
+			}
+		'
+	)
+
+	# https://gist.github.com/mattmc3/76ad634f362b5a9a54f1779a4737d5ae
+	# https://unix.stackexchange.com/questions/412868/bash-reverse-an-array
+	_search_paths=(${(@s: :)${_search_paths::-1}})
+
+	for i in ${(Oa)_search_paths[@]}; do
+		local _script_path=""
+
+		echo "Searching $i..." 1>&2
+
+		if [[ -e "$i/$_script" ]]; then
+			_script_path="$i/$_script"
+
+			echo "" 1>&2
+			echo "$_script found in $i." 1>&2
+			echo "" 1>&2
+
+			echo "Search completed." 1>&2
+
+			break
+		fi
+	done
+
+	if [[ -z "$_script_path" ]]; then
+		echo "$_script not found." 1>&2
+		echo "Exiting..." 1>&2
+
+		return 1
+	fi
+
+	echo "$_script_path"
+}
+
+function api {
+	local _s_path=$(get_script_path "api-gw-script.mjs")
+
+	if [[ $? -ne 0 ]]; then
+		return 1
+	fi
+
+	eval "$_s_path $@"
+}
+
+function lambda {
+	local _s_path=$(get_script_path "deploy-script.fish")
+
+	if [[ $? -ne 0 ]]; then
+		return 1
+	fi
+
+	eval "fish $_s_path $@"
+}
+
+# vim: ft=zsh:
