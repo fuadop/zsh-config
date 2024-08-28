@@ -2,6 +2,7 @@ alias vi="nvim"
 alias vim="nvim"
 
 alias ls="ls --color=tty"
+alias grep="grep --color=tty"
 
 eval "$(zoxide init zsh)"
 
@@ -22,13 +23,15 @@ autoload -U compinit
 compinit
 
 # key bindings
+bindkey -e # prefer emacs bindings
+
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 
 autoload -U edit-command-line
 zle -N edit-command-line
 
-bindkey "^x" edit-command-line
+bindkey "^X" edit-command-line
 
 # auto suggestions
 if [[ -z "$HOMBREW_PREFIX" ]]; then
