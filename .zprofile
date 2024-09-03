@@ -4,6 +4,11 @@ function add_bin_path {
   export PATH="$PATH:$1"
 }
 
+function remove_bin_path {
+	local _pattern=$(echo $1 | sed 's/\//\\\//g')
+	export PATH=$(echo $PATH | sed "s/:$_pattern//g")
+}
+
 function move_homebrew_bin_path_last {
 	# prefer system packages over homebrew's version, e.g python3
 
@@ -50,6 +55,5 @@ add_bin_path "/opt/homebrew/opt/e2fsprogs/bin"
 add_bin_path "/opt/homebrew/opt/e2fsprogs/sbin"
 add_bin_path "/opt/homebrew/opt/mysql-client/bin"
 
-unfunction add_bin_path
 unfunction move_homebrew_bin_path_last
 

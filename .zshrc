@@ -4,7 +4,7 @@ alias vim="nvim"
 alias ls="ls --color=tty"
 alias grep="grep --color=tty"
 
-eval "$(zoxide init zsh)"
+# functions
 
 function git_branch_name {
 	_branch=$(git branch --show-current 2> /dev/null)
@@ -14,8 +14,45 @@ function git_branch_name {
 	fi
 }
 
+function attach_i686_environ {
+	export TARGET="i686-elf"
+	export PREFIX="$HOME/Developer/cross-compiler/opt/cross"
+
+	add_bin_path "$PREFIX/bin"
+}
+
+function detach_i686_environ {
+	if [[ "$TARGET" = "i686-elf" ]]; then
+		unset TARGET
+
+		if [[ "$PREFIX" ]]; then
+			remove_bin_path "$PREFIX/bin"
+
+			unset PREFIX
+		fi
+	fi
+}
+
+# i686-elf bin & gcc binaries
+function toggle_i686_environ {
+	if [[ $PWD = "$HOME/Developer"* ]] || [[ $PWD = *"OS"* ]]; then
+		attach_i686_environ
+	else
+		detach_i686_environ
+	fi
+}
+
 if [[ -e "$ZDOTDIR/extends/deployment_scripts" ]]; then
 	source "$ZDOTDIR/extends/deployment_scripts"
+fi
+
+# hooks
+
+eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
+
+if [[ $chpwd_functions[(Ie)toggle_i686_environ] -eq 0 ]]; then
+	chpwd_functions+=(toggle_i686_environ)
 fi
 
 # completions
@@ -34,7 +71,7 @@ zle -N edit-command-line
 bindkey "^X" edit-command-line
 
 # auto suggestions
-if [[ -z "$HOMBREW_PREFIX" ]]; then
+if [[ "$HOMEBREW_PREFIX" ]]; then
 	_suggestions_path="$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 	if [[ -e "$_suggestions_path" ]]; then
@@ -45,7 +82,7 @@ if [[ -z "$HOMBREW_PREFIX" ]]; then
 fi
 
 # syntax highlighting
-if [[ -z "$HOMBREW_PREFIX" ]]; then
+if [[ "$HOMEBREW_PREFIX" ]]; then
 	_suggestions_path="$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 	if [[ -e "$_suggestions_path" ]]; then
