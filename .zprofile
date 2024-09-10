@@ -9,6 +9,21 @@ function remove_bin_path {
 	export PATH=$(echo $PATH | sed "s/:$_pattern//g")
 }
 
+function register_preferred_prompt {
+	local _p=""
+
+	_p+="%F{63}[%f"
+	_p+="%F{8}%l%f"
+	_p+="%F{11}@%f"
+	_p+="%F{13}%m%f"
+	_p+="%F{63}]%f"
+	_p+=" %c "
+	_p+="%B%F{%(?.green.red)}%#%f%b"
+
+	PROMPT="$_p "
+	RPROMPT="%F{8}%*%f"
+}
+
 function move_homebrew_bin_path_last {
 	# prefer system packages over homebrew's version, e.g python3
 

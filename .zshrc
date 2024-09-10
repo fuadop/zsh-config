@@ -3,6 +3,12 @@ alias vim="nvim"
 
 alias ls="ls --color=tty"
 alias grep="grep --color=tty"
+alias rgrep="grep --color=tty -r"
+
+setopt auto_cd
+
+# prompt
+register_preferred_prompt
 
 # functions
 
@@ -59,6 +65,10 @@ fi
 autoload -U compinit
 compinit
 
+zmodload -i zsh/complist
+
+zstyle ':completion:*' menu select
+
 # key bindings
 bindkey -e # prefer emacs bindings
 
@@ -87,6 +97,18 @@ if [[ "$HOMEBREW_PREFIX" ]]; then
 
 	if [[ -e "$_suggestions_path" ]]; then
 		source "$_suggestions_path"
+	fi
+fi
+
+# predictive history search
+if [[ "$HOMEBREW_PREFIX" ]]; then
+	_suggestions_path="$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+
+	if [[ -e "$_suggestions_path" ]]; then
+		source "$_suggestions_path"
+
+		bindkey '^[[A' history-substring-search-up
+		bindkey '^[[B' history-substring-search-down
 	fi
 fi
 
