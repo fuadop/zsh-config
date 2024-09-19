@@ -7,9 +7,6 @@ alias rgrep="grep --color=tty -r"
 
 setopt auto_cd
 
-# prompt
-register_preferred_prompt
-
 # functions
 
 function git_branch_name {
@@ -27,6 +24,21 @@ function attach_i686_environ {
 	add_bin_path "$PREFIX/bin"
 }
 
+function register_preferred_prompt {
+	local _p=""
+
+	_p+="%F{63}[%f"
+	_p+="%F{8}%l%f"
+	_p+="%F{11}@%f"
+	_p+="%F{13}%m%f"
+	_p+="%F{63}]%f"
+	_p+=" %c "
+	_p+="%B%F{%(?.green.red)}%#%f%b"
+
+	PROMPT="$_p "
+	RPROMPT="%F{8}%*%f"
+}
+
 function detach_i686_environ {
 	if [[ "$TARGET" = "i686-elf" ]]; then
 		unset TARGET
@@ -38,6 +50,10 @@ function detach_i686_environ {
 		fi
 	fi
 }
+
+# prompt
+register_preferred_prompt
+unfunction register_preferred_prompt
 
 # i686-elf bin & gcc binaries
 function toggle_i686_environ {
