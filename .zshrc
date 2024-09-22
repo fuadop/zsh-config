@@ -73,6 +73,8 @@ fi
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
 
+toggle_i686_environ
+
 if [[ $chpwd_functions[(Ie)toggle_i686_environ] -eq 0 ]]; then
 	chpwd_functions+=(toggle_i686_environ)
 fi
