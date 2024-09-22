@@ -51,6 +51,7 @@ fi
 
 add_bin_path "/opt/homebrew/opt/libpq/bin"
 add_bin_path "$HOME/Library/Python/3.9/bin"
+add_bin_path "/opt/homebrew/opt/binutils/bin"
 add_bin_path "/opt/homebrew/opt/e2fsprogs/bin"
 add_bin_path "/opt/homebrew/opt/e2fsprogs/sbin"
 add_bin_path "/opt/homebrew/opt/mysql-client/bin"
