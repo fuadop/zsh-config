@@ -43,18 +43,21 @@ function move_homebrew_bin_path_last {
 	fi
 }
 
-move_homebrew_bin_path_last
-
 if [[ "$PNPM_HOME" ]]; then
 	add_bin_path "$PNPM_HOME"
 fi
 
-add_bin_path "/opt/homebrew/opt/libpq/bin"
-add_bin_path "$HOME/Library/Python/3.9/bin"
-add_bin_path "/opt/homebrew/opt/binutils/bin"
-add_bin_path "/opt/homebrew/opt/e2fsprogs/bin"
-add_bin_path "/opt/homebrew/opt/e2fsprogs/sbin"
-add_bin_path "/opt/homebrew/opt/mysql-client/bin"
+if [[ $(uname -s) == "Darwin" ]]; then
+	move_homebrew_bin_path_last
+
+	add_bin_path "/opt/homebrew/opt/libpq/bin"
+	add_bin_path "$HOME/Library/Python/3.9/bin"
+	add_bin_path "/opt/homebrew/opt/binutils/bin"
+	add_bin_path "/opt/homebrew/opt/e2fsprogs/bin"
+	add_bin_path "/opt/homebrew/opt/e2fsprogs/sbin"
+	add_bin_path "/opt/homebrew/opt/mysql-client/bin"
+	add_bin_path "/Applications/ImHex.app/Contents/MacOS"
+fi
 
 unfunction move_homebrew_bin_path_last
 
