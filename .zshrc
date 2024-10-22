@@ -130,3 +130,6 @@ if [[ "$HOMEBREW_PREFIX" ]]; then
 	fi
 fi
 
+# fzf
+source <(fzf --zsh)
+
