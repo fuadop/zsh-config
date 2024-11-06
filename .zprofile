@@ -59,5 +59,7 @@ if [[ $(uname -s) == "Darwin" ]]; then
 	add_bin_path "/Applications/ImHex.app/Contents/MacOS"
 fi
 
+add_bin_path "$(go env GOPATH)/bin"
+
 unfunction move_homebrew_bin_path_last
 
