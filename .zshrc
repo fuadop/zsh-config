@@ -98,6 +98,16 @@ zle -N edit-command-line
 
 bindkey "^X" edit-command-line
 
+tmux -V &> /dev/null
+if [[ $? -eq 0 ]]; then
+	function clear_tmux_scrollback_buffer() {
+		tmux clear-history
+	}
+
+	zle -N clear_tmux_scrollback_buffer
+	bindkey "^[^L" clear_tmux_scrollback_buffer
+fi
+
 # auto suggestions
 if [[ "$HOMEBREW_PREFIX" ]]; then
 	_suggestions_path="$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
