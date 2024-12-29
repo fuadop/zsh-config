@@ -9,6 +9,14 @@ setopt auto_cd
 
 # functions
 
+function get_parent_cmd {
+	pid=$(echo $$)
+	ppid=$(ps -p $pid -o ppid | tail -n 1)
+	ppid_cmd=$(ps -p $ppid -o comm | tail -n 1)
+
+	echo $ppid_cmd
+}
+
 function git_branch_name {
 	_branch=$(git branch --show-current 2> /dev/null)
 
@@ -100,8 +108,10 @@ bindkey "^X" edit-command-line
 
 tmux -V &> /dev/null
 if [[ $? -eq 0 ]]; then
-	function clear_tmux_scrollback_buffer() {
-		tmux clear-history
+	function clear_tmux_scrollback_buffer {
+		if [[ $(get_parent_cmd) = *"tmux" ]]; then
+			tmux clear-history
+		fi
 	}
 
 	zle -N clear_tmux_scrollback_buffer
