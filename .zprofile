@@ -16,7 +16,6 @@ fi
 add_bin_path "$(go env GOPATH)/bin"
 
 if [[ $(uname -s) == "Darwin" ]]; then
-
 	add_bin_path "/opt/homebrew/opt/libpq/bin"
 	add_bin_path "/opt/homebrew/opt/python/bin"
 	add_bin_path "/opt/homebrew/opt/python/libexec/bin"
