@@ -15,6 +15,10 @@ fi
 
 add_bin_path "$(go env GOPATH)/bin"
 
+if [[ "$HOME" ]]; then
+	add_bin_path "$HOME/.ghcup/bin"
+fi
+
 if [[ $(uname -s) == "Darwin" ]]; then
 	add_bin_path "/opt/homebrew/opt/libpq/bin"
 	add_bin_path "/opt/homebrew/opt/python/bin"
@@ -22,7 +26,7 @@ if [[ $(uname -s) == "Darwin" ]]; then
 	add_bin_path "/opt/homebrew/opt/binutils/bin"
 	add_bin_path "/opt/homebrew/opt/e2fsprogs/bin"
 	add_bin_path "/opt/homebrew/opt/e2fsprogs/sbin"
-	add_bin_path "/opt/homebrew/opt/mysql-client/bin"
+	add_bin_path "/opt/homebrew/opt/mysql@8.4/bin"
 	add_bin_path "/Applications/ImHex.app/Contents/MacOS"
 fi
 

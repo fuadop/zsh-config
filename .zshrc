@@ -4,6 +4,7 @@ alias vim="nvim"
 alias ls="ls --color=tty"
 alias grep="grep --color=tty"
 alias rgrep="grep --color=tty -r"
+alias gorepl="yaegi"
 
 setopt auto_cd
 
@@ -25,13 +26,6 @@ function git_branch_name {
 	fi
 }
 
-function attach_i686_environ {
-	export TARGET="i686-elf"
-	export PREFIX="$HOME/Developer/cross-compiler/opt/cross"
-
-	add_bin_path "$PREFIX/bin"
-}
-
 function register_preferred_prompt {
 	local _p=""
 
@@ -47,30 +41,9 @@ function register_preferred_prompt {
 	RPROMPT="%F{8}%*%f"
 }
 
-function detach_i686_environ {
-	if [[ "$TARGET" = "i686-elf" ]]; then
-		unset TARGET
-
-		if [[ "$PREFIX" ]]; then
-			remove_bin_path "$PREFIX/bin"
-
-			unset PREFIX
-		fi
-	fi
-}
-
 # prompt
 register_preferred_prompt
 unfunction register_preferred_prompt
-
-# i686-elf bin & gcc binaries
-function toggle_i686_environ {
-	if [[ $PWD = "$HOME/Developer"* ]] || [[ $PWD = *"OS"* ]]; then
-		attach_i686_environ
-	else
-		detach_i686_environ
-	fi
-}
 
 if [[ -e "$ZDOTDIR/extends/deployment_scripts" ]]; then
 	source "$ZDOTDIR/extends/deployment_scripts"
@@ -80,12 +53,6 @@ fi
 
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
-
-toggle_i686_environ
-
-if [[ $chpwd_functions[(Ie)toggle_i686_environ] -eq 0 ]]; then
-	chpwd_functions+=(toggle_i686_environ)
-fi
 
 # completions
 autoload -U compinit
